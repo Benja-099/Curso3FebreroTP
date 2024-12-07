@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="peliculas.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2370"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Genero" custom_title="0" dock_id="1" table="4,6:mainGenero"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011e00ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">CREATE TABLE Clasificacion (
+    idClasificacion INTEGER NOT NULL,
+    nombreClasificacion VARCHAR(5) NOT NULL,
+     PRIMARY KEY (idClasificacion)
+);
+
+INSERT INTO Clasificacion (idClasificacion, nombreClasificacion) VALUES (1, 'ATP');
+INSERT INTO Clasificacion (idClasificacion, nombreClasificacion) VALUES (2, '+13');
+INSERT INTO Clasificacion (idClasificacion, nombreClasificacion) VALUES (3, '+16');
+INSERT INTO Clasificacion (idClasificacion, nombreClasificacion) VALUES (4, '+18');
+
+
+
+CREATE TABLE Peliculas
+( ID INTEGER NOT NULL,
+idClasificacion_p INTEGER NOT NULL,
+ Nombre VARCHAR(150), 
+Duracion VARCHAR(4),
+ Genero INTEGER,
+ fechaPublicacion DATE, 
+calificacion INTEGER NOT NULL CHECK (calificacion IN (1, 2, 3, 4, 5)),
+ PRIMARY KEY (ID AUTOINCREMENT),
+ FOREIGN KEY (idClasificacion_p) REFERENCES Clasificacion (idClasificacion),
+ FOREIGN KEY (Genero) REFERENCES Genero(ID) )
+
+
+INSERT INTO Peliculas (idClasificacion_p, Nombre, Duracion, Genero, fechaPublicacion, calificacion) 
+VALUES (1, 'Inception', '148', 1, '2010-07-16', 5);
+
+INSERT INTO Peliculas (idClasificacion_p, Nombre, Duracion, Genero, fechaPublicacion, calificacion) 
+VALUES (2, 'The Lion King', '88', 2, '1994-06-24', 4);
+
+INSERT INTO Peliculas (idClasificacion_p, Nombre, Duracion, Genero, fechaPublicacion, calificacion) 
+VALUES (3, 'The Dark Knight', '152', 1, '2008-07-18', 5);
+
+INSERT INTO Peliculas (idClasificacion_p, Nombre, Duracion, Genero, fechaPublicacion, calificacion) 
+VALUES (4, 'Frozen', '102', 2, '2013-11-27', 4);
+ 
+ 
+ 
+
+
+
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

@@ -9,9 +9,9 @@ def main():
     ventana = tk.Tk()
     ventana.title('Listado Peliculas')
     ventana.iconbitmap('img/pochoclos.ico')
-    ventana.resizable(0,0)#---------argegreg
+    ventana.resizable(0,0)
 
-    #ventana.resizable(False,False) DORMII ESTO PAV VER QEUD A
+   
          
     barrita_menu(ventana)
     app = Frame(root=ventana)

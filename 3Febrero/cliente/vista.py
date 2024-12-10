@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from modelo.consultas_dao import Peliculas,crear_tabla, guardar_peli,listar_peli,listar_generos,editar_peli,borrar_peli, listar_Clasificacion,listar_calificacion
+from modelo.consultas_dao import Peliculas,crear_tabla, guardar_peli,listar_peli,listar_generos,editar_peli,borrar_peli, listar_Clasificacion,listar_calificacion,buscar_pelicula_por_nombre
 from cliente.clasificacionFrame import ClasificacionFrame
 
 
@@ -21,20 +21,21 @@ class Frame(tk.Frame):
 
     def label_form(self):    
         self.label_nombre = tk.Label(self, text="Nombre: ", bg='#3C3D42')    
-        self.label_nombre.config(font=('Arial',12,'bold'))    
-        self.label_nombre.grid(row= 0, column=0,padx=10,pady=10)
-        self.label_nombre = tk.Label(self, text="Duración: ", bg='#3C3D42')    
-        self.label_nombre.config(font=('Arial',12,'bold'))    
-        self.label_nombre.grid(row= 1, column=0,padx=10,pady=10)    
-        self.label_nombre = tk.Label(self, text="Genero: ", bg='#3C3D42')    
-        self.label_nombre.config(font=('Arial',12,'bold'))    
-        self.label_nombre.grid(row= 2, column=0,padx=10,pady=10)
-        self.label_nombre = tk.Label(self, text="Clasificacion: ", bg='#3C3D42')    
-        self.label_nombre.config(font=('Arial',12,'bold'))    
-        self.label_nombre.grid(row= 3, column=0,padx=10,pady=10)
-        self.label_nombre = tk.Label(self, text="Calificacion: ", bg='#3C3D42')    
-        self.label_nombre.config(font=('Arial',12,'bold'))    
-        self.label_nombre.grid(row= 4, column=0,padx=10,pady=10)
+        self.label_nombre.config(font=('Arial', 12, 'bold'))    
+        self.label_nombre.grid(row=0, column=0, padx=10, pady=10)
+        self.label_duracion = tk.Label(self, text="Duración: ", bg='#3C3D42')    
+        self.label_duracion.config(font=('Arial', 12, 'bold'))    
+        self.label_duracion.grid(row=1, column=0, padx=10, pady=10)    
+        self.label_genero = tk.Label(self, text="Genero: ", bg='#3C3D42')    
+        self.label_genero.config(font=('Arial', 12, 'bold'))    
+        self.label_genero.grid(row=2, column=0, padx=10, pady=10)
+        self.label_clasificacion = tk.Label(self, text="Clasificacion: ", bg='#3C3D42')    
+        self.label_clasificacion.config(font=('Arial', 12, 'bold'))    
+        self.label_clasificacion.grid(row=3, column=0, padx=10, pady=10)
+        self.label_calificacion = tk.Label(self, text="Calificacion: ", bg='#3C3D42')    
+        self.label_calificacion.config(font=('Arial', 12, 'bold'))    
+        self.label_calificacion.grid(row=4, column=0, padx=10, pady=10)
+    
     
     def input_form(self):
         self.nombre = tk.StringVar()    
@@ -104,12 +105,15 @@ class Frame(tk.Frame):
         self.btn_cance.grid(row= 5, column=2,padx=10,pady=10)
     
     def guardar_campos(self):
+        nuevo_genero = self.entry_genero.current()
+        nueva_clasificacion = self.entry_clasificacion.current()
+        nueva_calificacion = self.entry_calificacion.current()
         pelicula = Peliculas(
             self.nombre.get(),
             self.duracion.get(),
-            self.entry_genero.current(),
-            self.entry_Clasificacion.current(),
-            self.entry_calificaion.current()
+            nuevo_genero ,
+            nueva_clasificacion,
+            nueva_calificacion 
         )
 
         if self.id_peli == None:
@@ -169,8 +173,7 @@ class Frame(tk.Frame):
         self.tabla.heading('#5', text='Calificacion')
 
         for p in self.lista_p:
-            self.tabla.insert('',0,text=p[0],
-                              values=(p[1],p[2],p[5]))
+            self.tabla.insert('',0,text=p[0], values=(p[1],p[2],p[3],p[4],p[5]))
 
         self.btn_editar = tk.Button(self, text='Editar', command=self.editar_registro)    
         self.btn_editar.config(width= 10,font=('Arial', 10,'bold'),fg ='#FFFFFF' ,bg='#009973',cursor='hand2',activebackground='#00cc99',activeforeground='#003729', bd=3, relief="raised", highlightthickness=3, highlightbackground="#004d3a")    
@@ -179,7 +182,33 @@ class Frame(tk.Frame):
         self.btn_delete = tk.Button(self, text='delete',command=self.eliminar_regristro)    
         self.btn_delete.config(width= 10,font=('Arial', 10,'bold'),fg ='#FFFFFF' ,bg='#cc3333',cursor='hand2',activebackground='#a32929',activeforeground='#2f0c0c', bd=3, relief="raised", highlightthickness=3, highlightbackground="#004d3a")    
         self.btn_delete.grid(row= 7, column=1,padx=10,pady=10)  
+
+        self.btn_delete = tk.Button(self, text='Filtrar',command=self.filtrar_registro)    
+        self.btn_delete.config(width= 10,font=('Arial', 10,'bold'),fg ='#FFFFFF' ,bg='#cc6633',cursor='hand2',activebackground='#818100',activeforeground='#272700', bd=3, relief="raised", highlightthickness=3, highlightbackground="#004d3a")    
+        self.btn_delete.grid(row= 8, column=1,padx=10,pady=10) 
+
+        self.btn_delete = tk.Button(self, text='Mostar Todo',command=self.mostrar_tabla)    
+        self.btn_delete.config(width= 10,font=('Arial', 10,'bold'),fg ='#FFFFFF' ,bg='#3333cc',cursor='hand2',activebackground='#818100',activeforeground='#272700', bd=3, relief="raised", highlightthickness=3, highlightbackground="#004d3a")    
+        self.btn_delete.grid(row= 8, column=2,padx=10,pady=10) 
+        #un input 
+        self.peliculaFiltro = tk.StringVar()
+        self.entry_peliculaFiltro = tk.Entry(self, textvariable=self.peliculaFiltro)
+        self.entry_peliculaFiltro.config(width=50)
+        self.entry_peliculaFiltro.grid(row=8, column=0, padx=10, pady=10)
     
+    def filtrar_registro(self):
+       nombre = self.peliculaFiltro.get()
+  
+       peliculas_filtradas  = buscar_pelicula_por_nombre(nombre)
+
+       for item in self.tabla.get_children():
+        self.tabla.delete(item)
+        
+  
+        
+       for p in peliculas_filtradas :
+        self.tabla.insert('', 'end', text=p[0], values=(p[1], p[2], p[3], p[4], p[5]))
+
     def editar_registro(self):
         try:
             self.id_peli = self.tabla.item(self.tabla.selection())['text']
@@ -196,9 +225,12 @@ class Frame(tk.Frame):
             self.entry_genero.current(self.generos.index(self.gene_peli))
             self.entry_clasificacion.current(self.clasificacion.index(self.clasi_peli))
             self.entry_calificacion.current(self.calificacion.index(self.cali_peli))
+       
         except:
             pass
-    
+
+
+   
     def eliminar_regristro(self):
         self.id_peli = self.tabla.item(self.tabla.selection())['text']
 

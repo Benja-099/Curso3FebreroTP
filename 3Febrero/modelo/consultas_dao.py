@@ -3,60 +3,85 @@ from .connecciondb import Conneccion
 def crear_tabla():
     conn = Conneccion()
 
-    sql= '''
+    sql_genero = '''
         CREATE TABLE IF NOT EXISTS Genero(
-        ID INTEGER NOT NULL,
-        Nombre VARCHAR(50),
-        PRIMARY KEY (ID AUTOINCREMENT)
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            Nombre VARCHAR(50)
         );
-
+    '''
+    sql_clasificacion = '''
+        CREATE TABLE IF NOT EXISTS Clasificacion(
+            idClasificacion INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombreClasificacion VARCHAR(5) NOT NULL
+        );
+    '''
+    sql_calificacion = '''
+        CREATE TABLE IF NOT EXISTS Calificacion(
+            idCalificacion INTEGER PRIMARY KEY AUTOINCREMENT,
+            NumeroCalificacion INTEGER NOT NULL
+        );
+    '''
+    sql_peliculas = '''
         CREATE TABLE IF NOT EXISTS Peliculas(
-        ID INTEGER NOT NULL,
-        Nombre VARCHAR(150),
-        Duracion VARCHAR(4),
-        Genero INTEGER,
-        PRIMARY KEY (ID AUTOINCREMENT),
-        FOREIGN KEY (Genero) REFERENCES Genero(ID)
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            idClasificacion_p INTEGER NOT NULL,
+            Nombre VARCHAR(150),
+            Duracion VARCHAR(4),
+            Genero INTEGER,
+            calificacion INTEGER NOT NULL CHECK (calificacion IN (1, 2, 3, 4, 5)),
+            FOREIGN KEY (idClasificacion_p) REFERENCES Clasificacion(idClasificacion),
+            FOREIGN KEY (Genero) REFERENCES Genero(ID)
         );
-'''
+    '''
     try:
-        conn.cursor.execute(sql)
+        conn.cursor.execute(sql_genero)
+        conn.cursor.execute(sql_clasificacion)
+        conn.cursor.execute(sql_calificacion)
+        conn.cursor.execute(sql_peliculas)
         conn.cerrar_con()
-    except:
-        pass
+        print("Tablas creadas correctamente.")
+    except Exception as e:
+        print(f"Error al crear las tablas: {e}")
+
 
 
 class Peliculas():
 
-    def __init__(self,nombre,duracion,genero,clasificacion,calificacion):
-       self.nombre = nombre
-       self.duracion = duracion
-       self.genero = genero
-       self.clasificaion = clasificacion
-       self.clasificaion = calificacion
+ 
+        def __init__(self, nombre, duracion, genero, clasificacion, calificacion):
+            self.nombre = nombre
+            self.duracion = duracion
+            self.genero = genero
+            self.clasificacion = clasificacion
+            self.calificacion = calificacion
 
-    def __str__(self):
-        return f'Pelicula[{self.nombre},{self.duracion},{self.genero},{self.clasificacion},{self.calificacion}]'
+        def __str__(self):
+            return f'Pelicula[{self.nombre}, {self.duracion}, {self.genero}, {self.clasificacion}, {self.calificacion}]'
 
 def guardar_peli(pelicula):
     conn = Conneccion()
 
-    sql= f'''
-        INSERT INTO Peliculas(Nombre,Duracion,Genero)
-        VALUES('{pelicula.nombre}','{pelicula.duracion}',{pelicula.genero},{pelicula.clasificacion},{pelicula.calificacion});
-'''
+    sql = f'''
+        INSERT INTO Peliculas(Nombre, Duracion, Genero, idClasificacion_p, calificacion)
+        VALUES('{pelicula.nombre}', '{pelicula.duracion}', {pelicula.genero}, {pelicula.clasificacion}, {pelicula.calificacion});
+    '''
+
     try:
         conn.cursor.execute(sql)
         conn.cerrar_con()
-    except:
-        pass
+    except Exception as e:
+        print(f"Error al guardar la película: {e}")
 
 def listar_peli():
     conn = Conneccion()
     listar_peliculas = []
 
     sql = '''
-        SELECT Peliculas.ID,Clasificacion.nombreClasificacion, Peliculas.Nombre, Peliculas.Duracion, Genero.Nombre, Peliculas.calificacion from Peliculas	INNER JOIN Clasificacion on Peliculas.idClasificacion_p=Clasificacion.idClasificacion inner join Genero on Genero.ID=Peliculas.Genero;
+       
+            SELECT p.ID, p.Nombre, p.Duracion, g.Nombre AS Genero, c.nombreClasificacion, p.calificacion
+            FROM Peliculas p
+            INNER JOIN Clasificacion c ON p.idClasificacion_p = c.idClasificacion
+            INNER JOIN Genero g ON p.Genero = g.ID;
     '''
     try:
         conn.cursor.execute(sql)
@@ -129,18 +154,18 @@ def listar_calificacion():#---------------eto agrgegr
 
 def editar_peli(pelicula, id):
     conn = Conneccion()
+    
+    sql = '''
+     UPDATE Peliculas
+        SET Nombre = ?, Duracion = ?, Genero = ?, idClasificacion_p = ?, calificacion = ?
+        WHERE ID = ?;
 
-    sql= f'''
-        UPDATE Peliculas
-        SET Nombre = '{pelicula.nombre}', Duracion = '{pelicula.duracion}', Genero = {pelicula.genero}, Clasificacion = {pelicula.clasificacion}, Calificacion = {pelicula.calificaion}
-        WHERE ID = {id}
-        ;
-'''
+    '''
     try:
-        conn.cursor.execute(sql)
+        conn.cursor.execute(sql, (pelicula.nombre, pelicula.duracion, pelicula.genero, pelicula.clasificacion, pelicula.calificacion, id))
         conn.cerrar_con()
-    except:
-        pass
+    except Exception as e:
+        print(f"Error al editar la película: {e}")
 
 def borrar_peli(id):
     conn = Conneccion()
@@ -155,6 +180,27 @@ def borrar_peli(id):
         conn.cerrar_con()
     except:
         pass
+
+        
+def buscar_pelicula_por_nombre(nombre):
+    conn = Conneccion()
+    Peliculas = []
+
+    sql = sql = " SELECT p.ID, p.Nombre, p.Duracion, g.Nombre AS Genero, c.nombreClasificacion, p.calificacion FROM Peliculas p INNER JOIN Clasificacion c ON p.idClasificacion_p = c.idClasificacion INNER JOIN Genero g ON p.Genero = g.ID WHERE p.Nombre like '%"+nombre+"%'; "
+       
+  
+   
+    try:
+        conn.cursor.execute(sql)
+        clasificaciones = conn.cursor.fetchall()
+        conn.cerrar_con()
+
+        return clasificaciones
+    except Exception as e:
+        print(f"Error al buscar clasificación: {e}")
+        return []
+    
+    
 
 
 
@@ -210,3 +256,5 @@ def buscar_clasificacion_por_nombre(nombre):
     except Exception as e:
         print(f"Error al buscar clasificación: {e}")
         return []
+
+    

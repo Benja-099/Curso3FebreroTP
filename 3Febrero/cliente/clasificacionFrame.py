@@ -3,9 +3,7 @@ from tkinter import ttk
 from modelo.consultas_dao import listar_clasificaciones,guardar_clasificacion,buscar_clasificacion_por_nombre
 from modelo.consultas_dao import Clasificacion
 
-import tkinter as tk
-from tkinter import ttk
-from modelo.consultas_dao import listar_clasificaciones, buscar_clasificacion_por_nombre
+
 
 class ClasificacionFrame(tk.Frame):
     def __init__(self, root=None):
@@ -21,33 +19,34 @@ class ClasificacionFrame(tk.Frame):
         self.mostrar_tabla()
 
     def label_form(self):
-        self.label_id = tk.Label(self, text="ID Clasificación: ")
-        self.label_id.config(font=('Arial', 12, 'bold'))
-        self.label_id.grid(row=0, column=0, padx=10, pady=10)
+        #self.label_id = tk.Label(self, text="ID Clasificación: ")
+        #self.label_id.config(font=('Arial', 12, 'bold'))
+        #self.label_id.grid(row=0, column=0, padx=10, pady=10)
 
         self.label_nombre = tk.Label(self, text="Nombre Clasificación: ")
         self.label_nombre.config(font=('Arial', 12, 'bold'))
         self.label_nombre.grid(row=1, column=0, padx=10, pady=10)
 
     def input_form(self):
-        self.id_clasificacion_var = tk.StringVar()
-        self.entry_id = tk.Entry(self, textvariable=self.id_clasificacion_var)
-        self.entry_id.config(width=50)
-        self.entry_id.grid(row=0, column=1, padx=10, pady=10)
+        #self.id_clasificacion_var = tk.StringVar()
+        #self.entry_id = tk.Entry(self, textvariable=self.id_clasificacion_var)
+      #  self.entry_id.config(width=50)
+       # self.entry_id.grid(row=0, column=1, padx=10, pady=10)
 
         self.nombre_clasificacion_var = tk.StringVar()
         self.entry_nombre = tk.Entry(self, textvariable=self.nombre_clasificacion_var)
         self.entry_nombre.config(width=50)
         self.entry_nombre.grid(row=1, column=1, padx=10, pady=10)
 
-    def boton_buscar(self):
+    def boton_buscar(self):#------------------------este esta pero no hace nada GIJARCE DE USAR CAPAS
+
 
         self.btn_buscar = tk.Button(self, text='Buscar por nombre', command=self.buscar_por_nombre)
         self.btn_buscar.config(width=20, font=('Arial', 12, 'bold'), fg='#FFFFFF', bg='#0D2A83', cursor='hand2', activebackground='#7594F5', activeforeground='#000000')
         self.btn_buscar.grid(row=2, column=1, padx=10, pady=10)
    
 
-    def buscar_por_nombre(self):
+    def buscar_por_nombre(self):##-----------------ESTO VBER ES LO DE BENJA CREO
         nombre = self.nombre_clasificacion_var.get()
   
         clasificaciones = buscar_clasificacion_por_nombre(nombre)

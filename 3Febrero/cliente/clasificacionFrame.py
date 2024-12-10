@@ -19,26 +19,28 @@ class ClasificacionFrame(tk.Frame):
         self.mostrar_tabla()
 
     def label_form(self):
-        #self.label_id = tk.Label(self, text="ID Clasificación: ")
+    
+       # self.label_id = tk.Label(self, text="ID Clasificación: ")
+        
         #self.label_id.config(font=('Arial', 12, 'bold'))
         #self.label_id.grid(row=0, column=0, padx=10, pady=10)
-
+ 
         self.label_nombre = tk.Label(self, text="Nombre Clasificación: ")
         self.label_nombre.config(font=('Arial', 12, 'bold'))
         self.label_nombre.grid(row=1, column=0, padx=10, pady=10)
 
     def input_form(self):
-        #self.id_clasificacion_var = tk.StringVar()
-        #self.entry_id = tk.Entry(self, textvariable=self.id_clasificacion_var)
-      #  self.entry_id.config(width=50)
-       # self.entry_id.grid(row=0, column=1, padx=10, pady=10)
+        self.id_clasificacion_var = tk.StringVar()
+        self.entry_id = tk.Entry(self, textvariable=self.id_clasificacion_var)
+        self.entry_id.config(width=50)
+        self.entry_id.grid(row=0, column=1, padx=10, pady=10)
 
         self.nombre_clasificacion_var = tk.StringVar()
         self.entry_nombre = tk.Entry(self, textvariable=self.nombre_clasificacion_var)
         self.entry_nombre.config(width=50)
         self.entry_nombre.grid(row=1, column=1, padx=10, pady=10)
 
-    def boton_buscar(self):#------------------------este esta pero no hace nada GIJARCE DE USAR CAPAS
+    def boton_buscar(self):
 
 
         self.btn_buscar = tk.Button(self, text='Buscar por nombre', command=self.buscar_por_nombre)
@@ -46,7 +48,7 @@ class ClasificacionFrame(tk.Frame):
         self.btn_buscar.grid(row=2, column=1, padx=10, pady=10)
    
 
-    def buscar_por_nombre(self):##-----------------ESTO VBER ES LO DE BENJA CREO
+    def buscar_por_nombre(self):
         nombre = self.nombre_clasificacion_var.get()
   
         clasificaciones = buscar_clasificacion_por_nombre(nombre)

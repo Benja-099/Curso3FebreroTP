@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from modelo.consultas_dao import Peliculas,crear_tabla, guardar_peli,listar_peli,listar_generos,editar_peli,borrar_peli
+from cliente.clasificacionFrame import ClasificacionFrame
+
 
 class Frame(tk.Frame):  
     def __init__(self, root = None):    
@@ -163,6 +165,7 @@ def barrita_menu(root):
     # #principal
     barra.add_cascade(label='Inicio', menu = menu_inicio) 
     barra.add_cascade(label='Consultas', menu = menu_inicio)  
+    barra.add_cascade(label='Clasificación', command=abrir_clasificacion)  # Nuevo menú para Clasificación
     barra.add_cascade(label='Acerca de..', menu = menu_inicio)  
     barra.add_cascade(label='Ayuda', menu= menu_inicio2)  
     
@@ -175,3 +178,14 @@ def barrita_menu(root):
     menu_inicio2.add_command(label='Contactanos')  
     menu_inicio2.add_command(label='lalala')  
     menu_inicio2.add_command(label='ola komo stas')
+   
+def abrir_clasificacion():
+    ventana_clasificacion = tk.Toplevel()
+    ventana_clasificacion.title("Clasificación")
+    ClasificacionFrame(ventana_clasificacion)
+
+
+
+
+
+    

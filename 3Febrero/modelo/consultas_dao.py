@@ -159,10 +159,8 @@ def buscar_clasificacion_por_nombre(nombre):
     conn = Conneccion()
     clasificaciones = []
 
-    sql = '''
-        SELECT * FROM Clasificacion 
-        WHERE nombreClasificacion LIKE '%{nombre}%';
-    '''
+    sql = "SELECT * FROM Clasificacion WHERE nombreClasificacion LIKE '%"+nombre+"%';"
+   
     try:
         conn.cursor.execute(sql)
         clasificaciones = conn.cursor.fetchall()

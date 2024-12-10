@@ -28,20 +28,22 @@ def crear_tabla():
 
 class Peliculas():
 
-    def __init__(self,nombre,duracion,genero):
+    def __init__(self,nombre,duracion,genero,clasificacion,calificacion):
        self.nombre = nombre
        self.duracion = duracion
        self.genero = genero
+       self.clasificaion = clasificacion
+       self.clasificaion = calificacion
 
     def __str__(self):
-        return f'Pelicula[{self.nombre},{self.duracion},{self.genero}]'
+        return f'Pelicula[{self.nombre},{self.duracion},{self.genero},{self.clasificacion},{self.calificacion}]'
 
 def guardar_peli(pelicula):
     conn = Conneccion()
 
     sql= f'''
         INSERT INTO Peliculas(Nombre,Duracion,Genero)
-        VALUES('{pelicula.nombre}','{pelicula.duracion}',{pelicula.genero});
+        VALUES('{pelicula.nombre}','{pelicula.duracion}',{pelicula.genero},{pelicula.clasificacion},{pelicula.calificacion});
 '''
     try:
         conn.cursor.execute(sql)
@@ -54,9 +56,7 @@ def listar_peli():
     listar_peliculas = []
 
     sql = '''
-        SELECT p.ID, p.Nombre, p.Duracion, p.Genero, p.fechaPublicacion, p.calificacion, g.Nombre as GeneroNombre
-        FROM Peliculas as p
-        INNER JOIN Genero as g ON p.Genero = g.ID;
+        SELECT Peliculas.ID,Clasificacion.nombreClasificacion, Peliculas.Nombre, Peliculas.Duracion, Genero.Nombre, Peliculas.calificacion from Peliculas	INNER JOIN Clasificacion on Peliculas.idClasificacion_p=Clasificacion.idClasificacion inner join Genero on Genero.ID=Peliculas.Genero;
     '''
     try:
         conn.cursor.execute(sql)
@@ -106,12 +106,33 @@ def listar_Clasificacion():#---------------eto agrgegr
         print(f"Error al listar las clasificaciones: {e}")
         return []
 
+
+def listar_calificacion():#---------------eto agrgegr
+    conn = Conneccion()
+    listar_clasi = []
+
+    sql = '''
+       SELECT* FROM calificacion;
+    '''
+    try:
+        conn.cursor.execute(sql)
+        listar_cali = conn.cursor.fetchall()
+        print(f"Calificaion obtenidos: {listar_cali}")  
+        conn.cerrar_con()
+
+        return listar_cali
+    except Exception as e:
+        print(f"Error al listar las calificaiones: {e}")
+        return []
+
+
+
 def editar_peli(pelicula, id):
     conn = Conneccion()
 
     sql= f'''
         UPDATE Peliculas
-        SET Nombre = '{pelicula.nombre}', Duracion = '{pelicula.duracion}', Genero = {pelicula.genero}
+        SET Nombre = '{pelicula.nombre}', Duracion = '{pelicula.duracion}', Genero = {pelicula.genero}, Clasificacion = {pelicula.clasificacion}, Calificacion = {pelicula.calificaion}
         WHERE ID = {id}
         ;
 '''

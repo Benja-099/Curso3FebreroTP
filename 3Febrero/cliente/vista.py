@@ -29,6 +29,10 @@ class Frame(tk.Frame):
         self.label_nombre = tk.Label(self, text="Genero: ")    
         self.label_nombre.config(font=('Arial',12,'bold'))    
         self.label_nombre.grid(row= 2, column=0,padx=10,pady=10)
+        self.label_nombre = tk.Label(self, text="Clasificacion: ")    
+        self.label_nombre.config(font=('Arial',12,'bold'))    
+        self.label_nombre.grid(row= 3, column=0,padx=10,pady=10)
+    
     
     def input_form(self):
         self.nombre = tk.StringVar()    
@@ -52,7 +56,7 @@ class Frame(tk.Frame):
         self.entry_genero.current(0)
         self.entry_genero.config(width=25)    
         self.entry_genero.bind("<<ComboboxSelected>>")    
-        self.entry_genero.grid(row= 2, column=1,padx=10,pady=10)
+        self.entry_genero.grid(row= 3, column=1,padx=10,pady=10)
 
           
         x = listar_Clasificacion()#--------------este agrgege
@@ -71,16 +75,16 @@ class Frame(tk.Frame):
     
     def botones_principales(self):    
         self.btn_alta = tk.Button(self, text='Nuevo', command= self.habilitar_campos)    
-        self.btn_alta.config(width= 20,font=('Arial', 12,'bold'),fg ='#FFFFFF' ,bg='#1C500B',cursor='hand2',activebackground='#3FD83F',activeforeground='#000000')    
-        self.btn_alta.grid(row= 3, column=0,padx=10,pady=10)    
+        self.btn_alta.config(width= 10,font=('Arial', 10,'bold'),fg ='#FFFFFF' ,bg='#009973',cursor='hand2',activebackground='#00cc99',activeforeground='#003729', bd=3, relief="raised", highlightthickness=3, highlightbackground="#004d3a")    
+        self.btn_alta.grid(row= 4, column=0,padx=10,pady=10)    
         
         self.btn_modi = tk.Button(self, text='Guardar', command=self.guardar_campos)    
-        self.btn_modi.config(width= 20,font=('Arial', 12,'bold'),fg ='#FFFFFF' ,bg='#0D2A83',cursor='hand2',activebackground='#7594F5',activeforeground='#000000')    
-        self.btn_modi.grid(row= 3, column=1,padx=10,pady=10)    
+        self.btn_modi.config(width= 10,font=('Arial', 10,'bold'),fg ='#FFFFFF' ,bg='#3399cc',cursor='hand2',activebackground='#2e8ab8',activeforeground='#18475e', bd=3, relief="raised", highlightthickness=3, highlightbackground="#004d3a")    
+        self.btn_modi.grid(row= 4, column=1,padx=10,pady=10)    
         
         self.btn_cance = tk.Button(self, text='Cancelar', command=self.bloquear_campos)    
-        self.btn_cance.config(width= 20,font=('Arial', 12,'bold'),fg ='#FFFFFF' ,bg='#A90A0A',cursor='hand2',activebackground='#F35B5B',activeforeground='#000000')    
-        self.btn_cance.grid(row= 3, column=2,padx=10,pady=10)
+        self.btn_cance.config(width= 10,font=('Arial', 10,'bold'),fg ='#FFFFFF' ,bg='#cc3333',cursor='hand2',activebackground='#a32929',activeforeground='#2f0c0c', bd=3, relief="raised", highlightthickness=3, highlightbackground="#004d3a")    
+        self.btn_cance.grid(row= 4, column=2,padx=10,pady=10)
     
     def guardar_campos(self):
         pelicula = Peliculas(
@@ -129,10 +133,10 @@ class Frame(tk.Frame):
         self.lista_p.reverse()
 
         self.tabla = ttk.Treeview(self, columns=('Nombre','Duración','Genero','Clasificacion'))
-        self.tabla.grid(row=4,column=0,columnspan=4, sticky='nse')
+        self.tabla.grid(row=5,column=0,columnspan=4, sticky='nse')
 
         self.scroll = ttk.Scrollbar(self, orient='vertical', command= self.tabla.yview)
-        self.scroll.grid(row=4,column=4, sticky='nse')
+        self.scroll.grid(row=5,column=4, sticky='nse')
         self.tabla.configure(yscrollcommand=self.scroll.set)
 
         self.tabla.heading('#0', text='ID')
@@ -146,12 +150,12 @@ class Frame(tk.Frame):
                               values=(p[1],p[2],p[5]))
 
         self.btn_editar = tk.Button(self, text='Editar', command=self.editar_registro)    
-        self.btn_editar.config(width= 20,font=('Arial', 12,'bold'),fg ='#FFFFFF' ,bg='#1C500B',cursor='hand2',activebackground='#3FD83F',activeforeground='#000000')    
-        self.btn_editar.grid(row= 5, column=0,padx=10,pady=10)    
+        self.btn_editar.config(width= 10,font=('Arial', 10,'bold'),fg ='#FFFFFF' ,bg='#009973',cursor='hand2',activebackground='#00cc99',activeforeground='#003729', bd=3, relief="raised", highlightthickness=3, highlightbackground="#004d3a")    
+        self.btn_editar.grid(row= 6, column=0,padx=10,pady=10)    
         
         self.btn_delete = tk.Button(self, text='delete',command=self.eliminar_regristro)    
-        self.btn_delete.config(width= 20,font=('Arial', 12,'bold'),fg ='#FFFFFF' ,bg='#A90A0A',cursor='hand2',activebackground='#F35B5B',activeforeground='#000000')    
-        self.btn_delete.grid(row= 5, column=1,padx=10,pady=10)  
+        self.btn_delete.config(width= 10,font=('Arial', 10,'bold'),fg ='#FFFFFF' ,bg='#cc3333',cursor='hand2',activebackground='#a32929',activeforeground='#2f0c0c', bd=3, relief="raised", highlightthickness=3, highlightbackground="#004d3a")    
+        self.btn_delete.grid(row= 6, column=1,padx=10,pady=10)  
     
     def editar_registro(self):
         try:

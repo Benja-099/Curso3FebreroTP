@@ -20,11 +20,7 @@ class ClasificacionFrame(tk.Frame):
 
     def label_form(self):
     
-       # self.label_id = tk.Label(self, text="ID Clasificación: ")
-        
-        #self.label_id.config(font=('Arial', 12, 'bold'))
-        #self.label_id.grid(row=0, column=0, padx=10, pady=10)
- 
+      
         self.label_nombre = tk.Label(self, text="Nombre Clasificación: ")
         self.label_nombre.config(font=('Arial', 12, 'bold'))
         self.label_nombre.grid(row=1, column=0, padx=10, pady=10)
@@ -71,20 +67,20 @@ class ClasificacionFrame(tk.Frame):
         self.id_clasificacion = None
 
     def mostrar_tabla(self):
-        # Crear la tabla para mostrar las clasificaciones
+     
         self.tabla = ttk.Treeview(self, columns=('Nombre Clasificación',))
         self.tabla.grid(row=3, column=0, columnspan=3, sticky='nse')
 
-        # Agregar un scrollbar a la tabla
+       
         self.scroll = ttk.Scrollbar(self, orient='vertical', command=self.tabla.yview)
         self.scroll.grid(row=3, column=3, sticky='nse')
         self.tabla.configure(yscrollcommand=self.scroll.set)
 
-        # Configurar los encabezados de la tabla
+       
         self.tabla.heading('#0', text='ID')
         self.tabla.heading('#1', text='Nombre Clasificación')
 
-        # Llenar la tabla con las clasificaciones existentes
+       
         clasificaciones = listar_clasificaciones()
         for c in clasificaciones:
             self.tabla.insert('', 'end', text=c[0], values=(c[1],))

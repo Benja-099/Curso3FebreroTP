@@ -104,7 +104,7 @@ def listar_generos():
     try:
         conn.cursor.execute(sql)
         listar_genero = conn.cursor.fetchall()
-        print(f"Géneros obtenidos: {listar_genero}")  # Mensaje de depuración
+        print(f"Géneros obtenidos: {listar_genero}")  
         conn.cerrar_con()
 
         return listar_genero
@@ -113,7 +113,7 @@ def listar_generos():
         return []
 
 
-def listar_Clasificacion():#---------------eto agrgegr
+def listar_Clasificacion():
     conn = Conneccion()
     listar_clasi = []
 
@@ -132,7 +132,7 @@ def listar_Clasificacion():#---------------eto agrgegr
         return []
 
 
-def listar_calificacion():#---------------eto agrgegr
+def listar_calificacion():
     conn = Conneccion()
     listar_clasi = []
 

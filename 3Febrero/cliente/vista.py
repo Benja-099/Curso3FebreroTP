@@ -62,7 +62,7 @@ class Frame(tk.Frame):
         self.entry_genero.grid(row= 2, column=1,padx=10,pady=10)
 
           
-        x = listar_Clasificacion()#--------------este agrgege
+        x = listar_Clasificacion()
         y = []
         for i in x:
             y.append(i[1])
@@ -242,26 +242,9 @@ class Frame(tk.Frame):
 def barrita_menu(root):  
     barra = tk.Menu(root, bg="lightblue", fg="darkblue")
     root.config(menu = barra, width = 300 , height = 300)
-   # menu_inicio = tk.Menu(barra, tearoff=0)
-    #menu_inicio2 = tk.Menu(barra, tearoff=0)
-
-    # niveles 
-    # #principal
-    #barra.add_cascade(label='Inicio', menu = menu_inicio) #----------------borreeee----------------------------es el menucitp
-    #barra.add_cascade(label='Consultas', menu = menu_inicio)  
-    barra.add_cascade(label='Clasificación', command=abrir_clasificacion)  # Nuevo menú para Clasificación
-    #barra.add_cascade(label='Acerca de..', menu = menu_inicio)  
-    #barra.add_cascade(label='Ayuda', menu= menu_inicio2)  
+   
+    barra.add_cascade(label='Clasificación', command=abrir_clasificacion)  
     
-    #submenu 
-  #  menu_inicio.add_command(label='Conectar DB', command= crear_tabla)  #-------------esto le pertenece a cadsacosa de los menucuiots
-   # menu_inicio.add_command(label='Desconectar DB')  
-    #menu_inicio.add_command(label='Salir', command= root.destroy)
-
-    #submenu ayuda
-   # menu_inicio2.add_command(label='Contactanos')  
-    #menu_inicio2.add_command(label='lalala')  
-    #menu_inicio2.add_command(label='ola komo stas')
    
 def abrir_clasificacion():
     ventana_clasificacion = tk.Toplevel()

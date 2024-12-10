@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from modelo.consultas_dao import Peliculas,crear_tabla, guardar_peli,listar_peli,listar_generos,editar_peli,borrar_peli
+from modelo.consultas_dao import Peliculas,crear_tabla, guardar_peli,listar_peli,listar_generos,editar_peli,borrar_peli, listar_Clasificacion
 from cliente.clasificacionFrame import ClasificacionFrame
 
 
@@ -53,6 +53,21 @@ class Frame(tk.Frame):
         self.entry_genero.config(width=25)    
         self.entry_genero.bind("<<ComboboxSelected>>")    
         self.entry_genero.grid(row= 2, column=1,padx=10,pady=10)
+
+          
+        x = listar_Clasificacion()#--------------este agrgege
+        y = []
+        for i in x:
+            y.append(i[1])
+
+        self.clasificacion = ['Selecione Uno'] + y
+        self.entry_clasificacion = ttk.Combobox(self, state="readonly")
+        self.entry_clasificacion['values'] = self.clasificacion
+        self.entry_clasificacion.current(0)
+        self.entry_clasificacion.config(width=25)    
+        self.entry_clasificacion.bind("<<ComboboxSelected>>")    
+        self.entry_clasificacion.grid(row= 2, column=1,padx=10,pady=10)
+    
     
     def botones_principales(self):    
         self.btn_alta = tk.Button(self, text='Nuevo', command= self.habilitar_campos)    
@@ -85,7 +100,9 @@ class Frame(tk.Frame):
     def habilitar_campos(self):    
         self.entry_nombre.config(state='normal')    
         self.entry_duracion.config(state='normal')    
-        self.entry_genero.config(state='normal')    
+        self.entry_genero.config(state='normal')
+        self.entry_clasificacion.config(state='normal')      
+
         self.btn_modi.config(state='normal')    
         self.btn_cance.config(state='normal')    
         self.btn_alta.config(state='disabled')
@@ -93,13 +110,16 @@ class Frame(tk.Frame):
     def bloquear_campos(self):    
         self.entry_nombre.config(state='disabled')    
         self.entry_duracion.config(state='disabled')    
-        self.entry_genero.config(state='disabled')    
+        self.entry_genero.config(state='disabled')
+        self.entry_clasificacion.config(state='disabled')     
+
         self.btn_modi.config(state='disabled')    
         self.btn_cance.config(state='disabled')    
         self.btn_alta.config(state='normal')
         self.nombre.set('')
         self.duracion.set('')
         self.entry_genero.current(0)
+        self.entry_clasificacion.current(0)
         self.id_peli = None
     
     def mostrar_tabla(self):
@@ -108,7 +128,7 @@ class Frame(tk.Frame):
         
         self.lista_p.reverse()
 
-        self.tabla = ttk.Treeview(self, columns=('Nombre','Duración','Genero'))
+        self.tabla = ttk.Treeview(self, columns=('Nombre','Duración','Genero','Clasificacion'))
         self.tabla.grid(row=4,column=0,columnspan=4, sticky='nse')
 
         self.scroll = ttk.Scrollbar(self, orient='vertical', command= self.tabla.yview)
@@ -119,6 +139,7 @@ class Frame(tk.Frame):
         self.tabla.heading('#1', text='Nombre')
         self.tabla.heading('#2', text='Duración')
         self.tabla.heading('#3', text='Genero')
+        self.tabla.heading('#4', text='Clasificacion')
 
         for p in self.lista_p:
             self.tabla.insert('',0,text=p[0],
@@ -139,11 +160,13 @@ class Frame(tk.Frame):
             self.nombre_peli = self.tabla.item(self.tabla.selection())['values'][0]
             self.dura_peli = self.tabla.item(self.tabla.selection())['values'][1]
             self.gene_peli = self.tabla.item(self.tabla.selection())['values'][2]
+            self.clasi_peli = self.tabla.item(self.tabla.selection())['values'][3]
 
             self.habilitar_campos()
             self.nombre.set(self.nombre_peli)
             self.duracion.set(self.dura_peli)
             self.entry_genero.current(self.generos.index(self.gene_peli))
+            self.entry_clasificacion.current(self.clasificacion.index(self.clasi_peli))
         except:
             pass
     
@@ -158,26 +181,26 @@ class Frame(tk.Frame):
 def barrita_menu(root):  
     barra = tk.Menu(root)
     root.config(menu = barra, width = 300 , height = 300)
-    menu_inicio = tk.Menu(barra, tearoff=0)
-    menu_inicio2 = tk.Menu(barra, tearoff=0)
+   # menu_inicio = tk.Menu(barra, tearoff=0)
+    #menu_inicio2 = tk.Menu(barra, tearoff=0)
 
     # niveles 
     # #principal
-    barra.add_cascade(label='Inicio', menu = menu_inicio) 
-    barra.add_cascade(label='Consultas', menu = menu_inicio)  
+    #barra.add_cascade(label='Inicio', menu = menu_inicio) #----------------borreeee----------------------------es el menucitp
+    #barra.add_cascade(label='Consultas', menu = menu_inicio)  
     barra.add_cascade(label='Clasificación', command=abrir_clasificacion)  # Nuevo menú para Clasificación
-    barra.add_cascade(label='Acerca de..', menu = menu_inicio)  
-    barra.add_cascade(label='Ayuda', menu= menu_inicio2)  
+    #barra.add_cascade(label='Acerca de..', menu = menu_inicio)  
+    #barra.add_cascade(label='Ayuda', menu= menu_inicio2)  
     
     #submenu 
-    menu_inicio.add_command(label='Conectar DB', command= crear_tabla)  
-    menu_inicio.add_command(label='Desconectar DB')  
-    menu_inicio.add_command(label='Salir', command= root.destroy)
+  #  menu_inicio.add_command(label='Conectar DB', command= crear_tabla)  #-------------esto le pertenece a cadsacosa de los menucuiots
+   # menu_inicio.add_command(label='Desconectar DB')  
+    #menu_inicio.add_command(label='Salir', command= root.destroy)
 
     #submenu ayuda
-    menu_inicio2.add_command(label='Contactanos')  
-    menu_inicio2.add_command(label='lalala')  
-    menu_inicio2.add_command(label='ola komo stas')
+   # menu_inicio2.add_command(label='Contactanos')  
+    #menu_inicio2.add_command(label='lalala')  
+    #menu_inicio2.add_command(label='ola komo stas')
    
 def abrir_clasificacion():
     ventana_clasificacion = tk.Toplevel()

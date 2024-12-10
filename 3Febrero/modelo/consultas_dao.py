@@ -87,6 +87,25 @@ def listar_generos():
         print(f"Error al listar géneros: {e}")
         return []
 
+
+def listar_Clasificacion():#---------------eto agrgegr
+    conn = Conneccion()
+    listar_clasi = []
+
+    sql = '''
+        SELECT * FROM Clasificacion ;
+    '''
+    try:
+        conn.cursor.execute(sql)
+        listar_clasi = conn.cursor.fetchall()
+        print(f"Géneros obtenidos: {listar_clasi}")  
+        conn.cerrar_con()
+
+        return listar_clasi
+    except Exception as e:
+        print(f"Error al listar las clasificaciones: {e}")
+        return []
+
 def editar_peli(pelicula, id):
     conn = Conneccion()
 

@@ -41,23 +41,23 @@ class ClasificacionFrame(tk.Frame):
         self.entry_nombre.grid(row=1, column=1, padx=10, pady=10)
 
     def boton_buscar(self):
-        print("Creando botón 'Buscar por nombre'...")
+
         self.btn_buscar = tk.Button(self, text='Buscar por nombre', command=self.buscar_por_nombre)
         self.btn_buscar.config(width=20, font=('Arial', 12, 'bold'), fg='#FFFFFF', bg='#0D2A83', cursor='hand2', activebackground='#7594F5', activeforeground='#000000')
         self.btn_buscar.grid(row=2, column=1, padx=10, pady=10)
-        print("Botón 'Buscar por nombre' creado correctamente.")
+   
 
     def buscar_por_nombre(self):
         nombre = self.nombre_clasificacion_var.get()
-        print(f"Nombre ingresado para búsqueda: {nombre}")
+  
         clasificaciones = buscar_clasificacion_por_nombre(nombre)
-        print(f"Resultados obtenidos de la búsqueda: {clasificaciones}")
+       
         
-        # Limpiar la tabla antes de mostrar los resultados de la búsqueda
+      
         for item in self.tabla.get_children():
             self.tabla.delete(item)
-        print("Tabla limpiada correctamente.")
-        # Mostrar los resultados de la búsqueda en la tabla
+      
+       
         for c in clasificaciones:
             print(f"Insertando en tabla: ID={c[0]}, Nombre={c[1]}")
             self.tabla.insert('', 'end', text=c[0], values=(c[1],))

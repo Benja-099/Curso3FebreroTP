@@ -10,3 +10,4 @@ Bienvenido a la aplicación de gestión de películas. Aquí puedes añadir, mod
 #Autores : Diaz Judith y Duran Benjamin
 
 ![Logo del proyecto](img/Captura.png)
+![Captura de pantalla (305)](https://github.com/user-attachments/assets/b353aab7-3faa-4c34-9a9a-4dae917e12ca)
